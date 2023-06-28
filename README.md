@@ -36,6 +36,9 @@ Here is a simple usecase example:
 
 [x] Write save and load functions (Can use an ISave interface or something, these will generally look the same)
 
+StoreData(string key, object data) takes any data type into it. Data type must be serializable, and I do not perform any checks to ensure it is.
+If the data type cannot be serialized, it will just store as empty.
+
 ```cs
     public void Save(){
         SaveData.StoreData(key, new SpawnedObjectData(){
@@ -55,3 +58,4 @@ Here is a simple usecase example:
 
 Future to maybe do:
 [] May add in the future GUID support and generation functions
+[] Improve performance from List to Dictionary for SaveData static class. List was just easier to set up lol
