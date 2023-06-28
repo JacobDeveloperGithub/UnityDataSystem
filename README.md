@@ -34,7 +34,7 @@ Here is a simple usecase example:
   }
 ```
 
-[x] Write save and load functionality as well
+[x] Write save and load functions (Can use an ISave interface or something, these will generally look the same)
 
 ```cs
     public void Save(){
