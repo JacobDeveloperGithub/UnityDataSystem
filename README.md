@@ -2,6 +2,7 @@
 Simple unity save/load system with optional encryption.
 
 Its very simple to use, uploading here for easy access to myself later.
+Can store any data type, as long as it is Serializable (use the tag [System.Serializable] on a class. Beware some objects arent serializable, like collections objects)
 
 Here is a simple usecase example:
 
@@ -16,28 +17,7 @@ Here is a simple usecase example:
   }
 ```
 
-[x] Step two: Save a load that POD into a GameObject using a uniquely assigned key to that object (its name if its in the scene for example, or if its a system, just a string of your choice)
-```cs
-  public class SpawnedObject : MonoBehaviour 
-  {
-      private string key = name; //transform.name
-      public void Start(){
-          if(SaveData.HasData(name))
-              Load();
-      }
-  
-      public void Update(){
-          if(Input.GetKeyDown(KeyCode.Space)){
-              Save();
-          }
-      }
-  }
-```
-
-[x] Write save and load functions (Can use an ISave interface or something, these will generally look the same)
-
-StoreData(string key, object data) takes any data type into it. Data type must be serializable, and I do not perform any checks to ensure it is.
-If the data type cannot be serialized, it will just store as empty.
+[x] Step Two: Write save and load functions 
 
 ```cs
     public void Save(){
@@ -54,6 +34,24 @@ If the data type cannot be serialized, it will just store as empty.
         gameObject.SetActive(data.isActive);
         GetComponent<SpriteRenderer>().color = data.color;
     }
+```
+
+[x] Step three: Save and load that POD into a GameObject using a uniquely assigned key to that object (its name if its in the scene for example, or if its a system, just a string of your choice)
+```cs
+  public class SpawnedObject : MonoBehaviour 
+  {
+      private string key = name; //transform.name
+      public void Start(){
+          if(SaveData.HasData(name))
+              Load();
+      }
+  
+      public void Update(){
+          if(Input.GetKeyDown(KeyCode.Space)){
+              Save();
+          }
+      }
+  }
 ```
 
 Future to maybe do:
