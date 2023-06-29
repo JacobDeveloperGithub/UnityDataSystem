@@ -59,3 +59,4 @@ If the data type cannot be serialized, it will just store as empty.
 Future to maybe do:
 [] May add in the future GUID support and generation functions
 [] Improve performance from List to Dictionary for SaveData static class. List was just easier to set up lol
+[] PlayerPrefs support for WebGL games or smaller case settings
