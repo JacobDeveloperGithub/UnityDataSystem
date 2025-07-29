@@ -44,24 +44,42 @@ public static class SaveData{
     }
 
     public static void Save(){
-        string path = Path.Combine(Application.persistentDataPath, "Save.json");
-        File.WriteAllText(path, DataSerializer.SerializeData(StoredData));
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            PlayerPrefs.SetString("SaveData", DataSerializer.SerializeData(StoredData));
+            PlayerPrefs.Save();
+        #else
+            string path = Path.Combine(Application.persistentDataPath, "Save.json");
+            File.WriteAllText(path, DataSerializer.SerializeData(StoredData));
+        #endif
     }
 
     public static void ClearSaveData(){
-        string path = Path.Combine(Application.persistentDataPath, "Save.json");
-        File.Delete(path);
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            PlayerPrefs.DeleteKey("SaveData");
+            PlayerPrefs.Save();
+        #else
+            string path = Path.Combine(Application.persistentDataPath, "Save.json");
+            File.Delete(path);
+        #endif
     }
 
     public static void LoadAllSavedData(){
-        string path = Path.Combine(Application.persistentDataPath, "Save.json");
-        try{
-            StoredData = DataSerializer.DeserializeData<DataContainer>(File.ReadAllText(path));
-        } catch{
-            ClearSaveData();
-            StoredData = new DataContainer();
-        }
-
+        #if UNITY_WEBGL && !UNITY_EDITOR
+            if (PlayerPrefs.HasKey("SaveData")) {
+                StoredData = DataSerializer.DeserializeData<DataContainer>(PlayerPrefs.GetString("SaveData"));
+            } else {
+                ClearSaveData();
+                StoredData = new DataContainer();
+            }
+        #else
+            string path = Path.Combine(Application.persistentDataPath, "Save.json");
+            try{
+                StoredData = DataSerializer.DeserializeData<DataContainer>(File.ReadAllText(path));
+            } catch{
+                ClearSaveData();
+                StoredData = new DataContainer();
+            }
+        #endif
     }
 }
 
